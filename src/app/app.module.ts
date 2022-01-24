@@ -1,16 +1,59 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {
+  NgModule,
+} from '@angular/core';
+import {
+  BrowserModule,
+} from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
+import {
+  ButtonComponent,
+} from '@components/button';
+import {
+  FooterComponent,
+} from '@components/footer';
+import {
+  GridComponent,
+} from '@components/grid';
+import {
+  HeaderComponent,
+} from '@components/header';
+import {
+  RangeComponent,
+} from '@components/range';
+
+import {
+  GameOfLifeComponent,
+} from '@containers/game-of-life';
+
+import {
+  CanvasDirective,
+} from '@directives/canvas.directive';
+
+import {
+  AppComponent,
+} from './app.component';
+
+import {
+  FontAwesomeModule,
+} from './font-awesome.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    ButtonComponent,
+    FooterComponent,
+    GridComponent,
+    HeaderComponent,
+    RangeComponent,
+    GameOfLifeComponent,
+    CanvasDirective,
+    AppComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FontAwesomeModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+  ],
 })
-export class AppModule { }
+export class AppModule {}
