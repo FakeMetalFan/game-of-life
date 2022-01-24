@@ -45,7 +45,10 @@ export class AnimationFramesService {
     this.fps$ = this.fpsCap$.pipe(
       switchMap(animate),
       withLatestFrom(this.paused$),
-      filter(([, paused]) => !paused),
+      filter(([
+        ,
+        paused,
+      ]) => !paused),
       pluck('0'),
     );
   }
