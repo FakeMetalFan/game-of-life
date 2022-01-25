@@ -24,6 +24,13 @@ import {
 @Component({
   selector: 'app-game-of-life',
   template: `
+    <div>
+      Fps:
+      <app-counter
+        [count]="animationFramesService.fpsCap$ | async"
+      ></app-counter>
+    </div>
+
     <app-grid
       *ngIf='gridService.state$ | async as state'
       [width]='state.width'
@@ -67,11 +74,10 @@ import {
         <span>Fps cap:</span>
         <app-range
           [min]='0'
-          [max]='60'
+          [max]='30'
           [value]='animationFramesService.fpsCap$ | async'
           (change$)='animationFramesService.capFps($event)'
-        >
-        </app-range>
+        ></app-range>
       </div>
     </div>
   `,
@@ -99,6 +105,7 @@ export class GameOfLifeComponent {
     ).subscribe(() => {
       gridService.next();
     });
+
     gridService.state$.pipe(
       pluck('static'),
       filter(Boolean),

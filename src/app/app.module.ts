@@ -9,6 +9,9 @@ import {
   ButtonComponent,
 } from '@components/button';
 import {
+  CounterComponent,
+} from '@components/counter';
+import {
   FooterComponent,
 } from '@components/footer';
 import {
@@ -40,6 +43,7 @@ import {
 @NgModule({
   declarations: [
     ButtonComponent,
+    CounterComponent,
     FooterComponent,
     GridComponent,
     HeaderComponent,

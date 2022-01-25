@@ -11,6 +11,7 @@ import {
   mapTo,
   Observable,
   pluck,
+  shareReplay,
   switchMap,
   tap,
   withLatestFrom,
@@ -40,8 +41,12 @@ export class AnimationFramesService {
   fps$: Observable<number>;
 
   constructor(@Inject('fpsCap') @Optional() fpsCap: number) {
-    this.fpsCapper$ = new BehaviorSubject(fpsCap ?? 24);
-    this.fpsCap$ = this.fpsCapper$.asObservable();
+    this.fpsCapper$ = new BehaviorSubject(fpsCap ?? 20);
+
+    this.fpsCap$ = this.fpsCapper$.asObservable().pipe(
+      shareReplay(1),
+    );
+
     this.fps$ = this.fpsCap$.pipe(
       switchMap(animate),
       withLatestFrom(this.paused$),

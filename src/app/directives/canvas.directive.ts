@@ -2,37 +2,42 @@ import {
   Directive,
   ElementRef,
   Input,
+  OnChanges,
   SimpleChanges,
 } from '@angular/core';
 
 @Directive({
   selector: '[appCanvas]'
 })
-export class CanvasDirective {
+export class CanvasDirective implements OnChanges {
   @Input() drawCallback: CanvasDrawCallback;
 
-  private drawProps: CanvasDrawProps;
+  private ctx: CanvasRenderingContext2D;
 
-  constructor({
-    nativeElement,
-  }: ElementRef) {
-    if (!(nativeElement instanceof HTMLCanvasElement)) {
-      throw 'directive [appCanvas] must be used with HTMLCanvasElement';
+  constructor(private elementRef: ElementRef<HTMLCanvasElement>) {
+    if (this.elem instanceof HTMLCanvasElement) {
+      this.ctx = this.elem.getContext('2d');
+
+      return;
     }
 
-    const {
-      width,
-      height,
-    } = nativeElement;
-
-    this.drawProps = {
-      width,
-      height,
-      ctx: nativeElement.getContext('2d')!,
-    };
+    throw 'directive [appCanvas] must be used with HTMLCanvasElement';
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    changes?.['drawCallback']?.currentValue?.(this.drawProps);
+    const {
+      width,
+      height,
+    } = this.elem;
+
+    changes?.['drawCallback']?.currentValue?.({
+      width,
+      height,
+      ctx: this.ctx,
+    });
+  }
+
+  get elem() {
+    return this.elementRef.nativeElement;
   }
 }

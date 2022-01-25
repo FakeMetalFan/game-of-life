@@ -39,8 +39,7 @@ const getCellFill = (cell: Cell) => {
       [drawCallback]='drawCallback'
       (click)='onClick($event)'
       appCanvas
-    >
-    </canvas>
+    ></canvas>
   `,
   styles: [
     `
