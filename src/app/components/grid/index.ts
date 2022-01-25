@@ -57,24 +57,27 @@ export class GridComponent implements OnChanges, OnInit {
   @Input() cells: Cell[] = [];
   @Input() changedIndexes: number[];
   @Output() click$ = new EventEmitter<number>();
+
   drawCallback: CanvasDrawCallback;
 
   private pointUtils: PointUtils;
 
   ngOnChanges(changes: SimpleChanges) {
-    this.drawCallback = (props) => {
-      if (changes?.['changedIndexes']?.currentValue?.length) {
-        each(this.changedIndexes, (index) => {
-          this.drawCell(this.cells[index], index, props);
+    if (changes?.['changedIndexes']) {
+      this.drawCallback = (props) => {
+        if (this.changedIndexes.length) {
+          each(this.changedIndexes, (index) => {
+            this.drawCell(this.cells[index], index, props);
+          });
+
+          return;
+        }
+
+        each(this.cells, (cell, index) => {
+          this.drawCell(cell, index, props);
         });
-
-        return;
-      }
-
-      each(this.cells, (cell, index) => {
-        this.drawCell(cell, index, props);
-      });
-    };
+      };
+    }
   }
 
   ngOnInit() {
