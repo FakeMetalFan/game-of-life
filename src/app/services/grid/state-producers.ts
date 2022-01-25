@@ -52,23 +52,6 @@ const getNextCell = (cell: Cell, aliveNeighbors: number) => {
   return Cell.Dead;
 };
 
-export const initState = (width: number, height: number): Grid => {
-  const cells = map(
-    toArray({
-      length: width * height,
-    }),
-    randomizeCell,
-  );
-
-  return {
-    width,
-    height,
-    cells,
-    changedIndexes: [],
-    static: false,
-  };
-};
-
 const getFirstGenState = (state: Grid) =>
   produceState(state, ({
     cells,
@@ -103,7 +86,7 @@ const getNextGenState = (state: Grid) =>
     });
   });
 
-const setIsStatic = (state: Grid) =>
+const setStaticValue = (state: Grid) =>
   produce(state, (draft) => {
     const {
       cells,
@@ -113,13 +96,31 @@ const setIsStatic = (state: Grid) =>
       || (!some(cells, isNewCell) && !hasChangedCells(draft));
   });
 
-export const updateState = (state: Grid) =>
-  flow(
-    hasChangedCells(state) ? getNextGenState : getFirstGenState,
-    setIsStatic,
-  )(state);
+const clear = (state: Grid) =>
+  produce(state, (draft) => {
+    draft.cells = map(draft.cells, () => Cell.Dead);
+    draft.changedIndexes = [];
+    draft.static = true;
+  });
 
-export const toggleCell = (index: number, state: Grid) =>
+const initState = (width: number, height: number): Grid => {
+  const cells = map(
+    toArray({
+      length: width * height,
+    }),
+    randomizeCell,
+  );
+
+  return {
+    width,
+    height,
+    cells,
+    changedIndexes: [],
+    static: false,
+  };
+};
+
+const toggleCell = (index: number, state: Grid) =>
   produce(state, ({
     cells,
     changedIndexes,
@@ -128,9 +129,15 @@ export const toggleCell = (index: number, state: Grid) =>
     changedIndexes.push(index);
   });
 
-export const clear = (state: Grid) =>
-  produce(state, (draft) => {
-    draft.cells = map(draft.cells, () => Cell.Dead);
-    draft.changedIndexes = [];
-    draft.static = true;
-  });
+const updateState = (state: Grid) =>
+  flow(
+    hasChangedCells(state) ? getNextGenState : getFirstGenState,
+    setStaticValue,
+  )(state);
+
+export default {
+  clear,
+  initState,
+  toggleCell,
+  updateState,
+};

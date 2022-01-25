@@ -10,12 +10,7 @@ import {
   scan,
 } from 'rxjs';
 
-import {
-  clear,
-  initState,
-  toggleCell,
-  updateState,
-} from './state-producers';
+import stateProducers from './state-producers';
 
 const enum ACTION_TYPE {
   INIT,
@@ -61,17 +56,17 @@ export class GridService {
       scan((acc, action) => {
         switch (action.type) {
           case ACTION_TYPE.NEXT_GEN:
-            return updateState(acc);
+            return stateProducers.updateState(acc);
           case ACTION_TYPE.CELL_TOGGLE:
-            return toggleCell(action.payload, acc);
+            return stateProducers.toggleCell(action.payload, acc);
           case ACTION_TYPE.CLEAR:
-            return clear(acc);
+            return stateProducers.clear(acc);
           case ACTION_TYPE.Populate:
-            return initState(width, height);
+            return stateProducers.initState(width, height);
           default:
             return acc;
         }
-      }, initState(width, height)),
+      }, stateProducers.initState(width, height)),
     );
   }
 
