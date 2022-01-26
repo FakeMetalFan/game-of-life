@@ -28,7 +28,7 @@ const animate = (fpsCap: number) => {
     }),
     mapTo(fpsCap),
   );
-}
+};
 
 @Injectable({
   providedIn: 'root',
