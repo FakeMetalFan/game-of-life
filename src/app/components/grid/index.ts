@@ -12,6 +12,7 @@ import {
 import {
   each,
   floor,
+  size,
 } from 'lodash-es';
 
 import Cell from '@constants/cell';
@@ -65,7 +66,7 @@ export class GridComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes?.['changedIndexes']) {
       this.drawCallback = (props) => {
-        if (this.changedIndexes.length) {
+        if (size(this.changedIndexes)) {
           each(this.changedIndexes, (index) => {
             this.drawCell(this.cells[index], index, props);
           });
