@@ -13,7 +13,6 @@ import {
 import stateProducers from './state-producers';
 
 const enum ACTION_TYPE {
-  INIT,
   NEXT_GEN,
   CELL_TOGGLE,
   CLEAR,
@@ -21,9 +20,6 @@ const enum ACTION_TYPE {
 }
 
 type Action =
-  | {
-      type: ACTION_TYPE.INIT;
-    }
   | {
       type: ACTION_TYPE.NEXT_GEN;
     }
@@ -42,9 +38,7 @@ type Action =
   providedIn: 'root',
 })
 export class GridService {
-  private actions$ = new BehaviorSubject<Action>({
-    type: ACTION_TYPE.INIT,
-  });
+  private actions$ = new Subject<Action>();
 
   state$: Observable<Grid>;
 
