@@ -38,7 +38,7 @@ type Action =
   providedIn: 'root',
 })
 export class GridService {
-  private actions$ = new Subject<Action>();
+  private actions$ = new BehaviorSubject({} as Action);
 
   state$: Observable<Grid>;
 
